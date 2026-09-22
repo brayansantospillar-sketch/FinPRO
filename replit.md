@@ -1,6 +1,6 @@
-# [Project name]
+# FinPro — Controle Financeiro
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Aplicação web de controle financeiro pessoal com dashboard, transações, filtros, gráficos e persistência local.
 
 ## Run & Operate
 
@@ -22,15 +22,27 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/finpro/src/pages/dashboard.tsx` — visão geral com filtros, indicadores e gráficos.
+- `artifacts/finpro/src/pages/transactions.tsx` — pesquisa, filtros, tabela, edição e exclusão.
+- `artifacts/finpro/src/components/transaction-dialog.tsx` — formulário compartilhado de lançamentos.
+- `artifacts/finpro/src/lib/finance.ts` — serviço de persistência local e dados iniciais.
+- `artifacts/finpro/src/lib/finance-utils.ts` — formatação e cálculos financeiros centralizados.
+- `artifacts/finpro/src/hooks/use-finance.tsx` — estado compartilhado e atualização das telas.
+- `artifacts/finpro/src/index.css` — tokens e tema visual dark do FinPro.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- O MVP usa `localStorage` atrás de `financeService`, mantendo os componentes desacoplados do mecanismo de persistência.
+- Valores monetários são armazenados em centavos inteiros e convertidos para BRL apenas na apresentação.
+- Dashboard e transações compartilham o mesmo `FinanceProvider`, garantindo atualização imediata após criar, editar ou excluir.
+- O escopo inicial não inclui cartões, contas bancárias, parcelamentos, recorrências, relatórios avançados, importação ou IA.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Dashboard em português do Brasil com saldo acumulado, entradas, saídas, resultado do período e filtros de mês, ano e categoria.
+- Gráficos de fluxo de caixa e distribuição de despesas baseados nos lançamentos cadastrados.
+- Tela de transações com busca, filtros, cadastro, edição, exclusão com confirmação e feedback por toast.
+- Layout responsivo com navegação desktop e mobile, mantendo `+ Lançar` acessível.
 
 ## User preferences
 

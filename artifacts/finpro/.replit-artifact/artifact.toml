@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "FinPro — Controle Financeiro"
+description = "Aplicação web de controle financeiro pessoal em português do Brasil, com dashboard, transações, filtros, gráficos e persistência local."
+version = "1.0.0"
+id = "artifacts/finpro"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22090
+
+[services.development]
+run = "pnpm --filter @workspace/finpro run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/finpro", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/finpro/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22090"
+BASE_PATH = "/"
