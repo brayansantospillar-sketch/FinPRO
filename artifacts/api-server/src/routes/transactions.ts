@@ -3,6 +3,11 @@ import { desc, eq } from "drizzle-orm";
 import { db, transactionsTable } from "@workspace/db";
 
 const router = Router();
+
+router.use((_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
 const TYPES = new Set(["receita", "despesa"]);
 const CATEGORIES = new Set(["Alimentação","Mercado","Moradia","Transporte","Saúde","Educação","Compras","Lazer","Assinaturas","Contas","Investimentos","Salário","Outros"]);
 
