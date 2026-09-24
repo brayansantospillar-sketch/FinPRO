@@ -7,7 +7,7 @@
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
-    "dev": "sh -c 'PORT=3001 pnpm --filter @workspace/api-server dev & API_PID=$!; trap \"kill $API_PID 2>/dev/null || true\" EXIT INT TERM; PORT=5000 pnpm --filter @workspace/finpro dev'"
+    "dev": "pnpm --filter @workspace/finpro build && PORT=5000 pnpm --filter @workspace/api-server dev"
   },
   "private": true,
   "dependencies": {
