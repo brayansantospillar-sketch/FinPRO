@@ -6,6 +6,8 @@ import { TransactionDialog } from '@/components/transaction-dialog';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FinanceProvider, useFinance } from '@/hooks/use-finance';
+import { ProfileProvider, useProfile } from '@/hooks/use-profile';
+import { ProfileGate } from '@/pages/profile-gate';
 import { Dashboard } from '@/pages/dashboard';
 import { TransactionsPage } from '@/pages/transactions';
 import NotFound from '@/pages/not-found';
@@ -50,14 +52,21 @@ function RoutedErrorBoundary({ children }: { children: ReactNode }) {
   return <ErrorBoundary resetKey={location}>{children}</ErrorBoundary>;
 }
 
+function ProfiledApp() {
+  const { activeProfile, loading } = useProfile();
+  if (loading) return <ProfileGate />;
+  if (!activeProfile) return <ProfileGate />;
+  return <FinanceProvider><AppContent /></FinanceProvider>;
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <FinanceProvider>
-            <AppContent />
-          </FinanceProvider>
+          <ProfileProvider>
+            <ProfiledApp />
+          </ProfileProvider>
         </WouterRouter>
         <Toaster />
       </TooltipProvider>
