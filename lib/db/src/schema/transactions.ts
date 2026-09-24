@@ -1,7 +1,9 @@
 import { integer, pgTable, text, timestamp, uuid, date } from "drizzle-orm/pg-core";
+import { profilesTable } from "./profiles";
 
 export const transactionsTable = pgTable("transactions", {
   id: uuid("id").defaultRandom().primaryKey(),
+  profileId: uuid("profile_id").references(() => profilesTable.id, { onDelete: "set null" }),
   type: text("type").notNull(),
   description: text("description").notNull(),
   amountCents: integer("amount_cents").notNull(),
