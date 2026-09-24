@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
-const frontendDir = path.resolve(process.cwd(), "artifacts/finpro/dist/public");
+const frontendDir = path.resolve(process.cwd(), "../finpro/dist/public");
 const frontendIndex = path.join(frontendDir, "index.html");
 
 if (existsSync(frontendIndex)) {
