@@ -10,12 +10,12 @@ const parseAmount = (value: string) => { const normalized = value.replace(/\s/g,
 const displayAmount = (cents: number) => (cents / 100).toFixed(2).replace('.', ',');
 const blank = (): TransactionInput => ({ type: 'despesa', description: '', amountCents: 0, category: 'Outros', date: today(), notes: '' });
 
-export function TransactionDialog({ open, onOpenChange, transaction, onSubmit }: { open: boolean; onOpenChange: (open: boolean) => void; transaction?: Transaction | null; onSubmit: (input: TransactionInput) => void }) {
+export function TransactionDialog({ open, onOpenChange, transaction, onSubmit }: { open: boolean; onOpenChange: (open: boolean) => void; transaction?: Transaction | null; onSubmit: (input: TransactionInput) => void | Promise<void> }) {
   const [form, setForm] = useState<TransactionInput>(blank());
   const [amount, setAmount] = useState('');
   useEffect(() => { if (open) { const initial = transaction ? { type: transaction.type, description: transaction.description, amountCents: transaction.amountCents, category: transaction.category, date: transaction.date, notes: transaction.notes ?? '' } : blank(); setForm(initial); setAmount(transaction ? displayAmount(transaction.amountCents) : ''); } }, [open, transaction]);
   const update = <K extends keyof TransactionInput>(key: K, value: TransactionInput[K]) => setForm((current) => ({ ...current, [key]: value }));
-  const submit = (event: FormEvent) => { event.preventDefault(); if (!form.description.trim() || parseAmount(amount) <= 0) return; onSubmit({ ...form, description: form.description.trim(), amountCents: parseAmount(amount) }); };
+  const submit = async (event: FormEvent) => { event.preventDefault(); if (!form.description.trim() || parseAmount(amount) <= 0) return; await onSubmit({ ...form, description: form.description.trim(), amountCents: parseAmount(amount) }); };
   return <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="border-card-border bg-card p-0 sm:max-w-[560px]">
       <form onSubmit={submit}>
