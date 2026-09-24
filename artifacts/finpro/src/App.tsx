@@ -33,7 +33,7 @@ function DashboardRoute() {
   const { createTransaction } = useFinance();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const submit = async (input: TransactionInput) => { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu saldo foi atualizado.' }); };
+  const submit = async (input: TransactionInput) => { try { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu saldo foi atualizado.' }); } catch (error) { toast({ title: 'Não foi possível salvar', description: error instanceof Error ? error.message : 'Tente novamente.', variant: 'destructive' }); } };
   return <><Dashboard onAdd={() => setOpen(true)} /><TransactionDialog open={open} onOpenChange={setOpen} onSubmit={submit} /></>;
 }
 
@@ -41,7 +41,7 @@ function TransactionsRoute() {
   const { createTransaction } = useFinance();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const submit = async (input: TransactionInput) => { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu novo registro já está no cockpit.' }); };
+  const submit = async (input: TransactionInput) => { try { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu novo registro já está no cockpit.' }); } catch (error) { toast({ title: 'Não foi possível salvar', description: error instanceof Error ? error.message : 'Tente novamente.', variant: 'destructive' }); } };
   return <><TransactionsPage onAdd={() => setOpen(true)} /><TransactionDialog open={open} onOpenChange={setOpen} onSubmit={submit} /></>;
 }
 
