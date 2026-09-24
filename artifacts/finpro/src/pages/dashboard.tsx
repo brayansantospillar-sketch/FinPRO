@@ -119,8 +119,7 @@ export function Dashboard({ onAdd }: { onAdd: () => void }) {
 
   const periodIncome = sumByType(selectedItems, 'receita');
   const periodExpenses = sumByType(selectedItems, 'despesa');
-  const currentBalance =
-    sumByType(transactions, 'receita') - sumByType(transactions, 'despesa');
+  const currentBalance = periodIncome - periodExpenses;
   const periodResult = periodIncome - periodExpenses;
   const categories = useMemo(
     () =>
@@ -217,9 +216,9 @@ export function Dashboard({ onAdd }: { onAdd: () => void }) {
           <div className="absolute right-0 top-0 h-32 w-32 translate-x-8 -translate-y-8 rounded-full bg-primary/10 blur-2xl" />
           <div className="relative">
             <div className="mb-5 flex items-center justify-between">
-              <span className="muted-label">Saldo atual</span>
+              <span className="muted-label">Saldo do período</span>
               <span className="rounded-lg bg-primary/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-primary">
-                Total
+                Filtro
               </span>
             </div>
             <p className="number-display text-3xl font-bold text-foreground" data-testid="text-balance">
@@ -227,7 +226,7 @@ export function Dashboard({ onAdd }: { onAdd: () => void }) {
             </p>
             <div className="mt-5 flex items-center gap-2 text-xs text-muted-foreground">
               <span className="flex items-center gap-1 text-emerald-300">
-                <TrendingUp className="h-3.5 w-3.5" /> Fluxo acumulado
+                <TrendingUp className="h-3.5 w-3.5" /> Entradas menos saídas
               </span>
             </div>
           </div>
