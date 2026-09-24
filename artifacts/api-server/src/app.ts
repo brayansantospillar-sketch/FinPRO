@@ -34,10 +34,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
-const frontendDir = path.resolve(import.meta.dirname, "../../finpro/dist/public");
+const frontendDir = path.resolve(process.cwd(), "artifacts/finpro/dist/public");
 const frontendIndex = path.join(frontendDir, "index.html");
 
 if (existsSync(frontendIndex)) {
+  logger.info({ frontendDir }, "Serving FinPRO frontend");
   app.use(express.static(frontendDir));
   app.get("/{*splat}", (_req, res) => {
     res.sendFile(frontendIndex);
