@@ -9,7 +9,7 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...init, headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) } });
   if (!response.ok) {
     const data = await response.json().catch(() => null) as { message?: string } | null;
-    throw new Error(data?.message ?? 'Não foi possível concluir a operação.');
+    throw new Error(data?.message ?? `Não foi possível concluir a operação (HTTP ${response.status}).`);
   }
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
