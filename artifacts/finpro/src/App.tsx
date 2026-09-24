@@ -33,7 +33,7 @@ function DashboardRoute() {
   const { createTransaction } = useFinance();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const submit = (input: TransactionInput) => { createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu saldo foi atualizado.' }); };
+  const submit = async (input: TransactionInput) => { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu saldo foi atualizado.' }); };
   return <><Dashboard onAdd={() => setOpen(true)} /><TransactionDialog open={open} onOpenChange={setOpen} onSubmit={submit} /></>;
 }
 
@@ -41,7 +41,7 @@ function TransactionsRoute() {
   const { createTransaction } = useFinance();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const submit = (input: TransactionInput) => { createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu novo registro já está no cockpit.' }); };
+  const submit = async (input: TransactionInput) => { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu novo registro já está no cockpit.' }); };
   return <><TransactionsPage onAdd={() => setOpen(true)} /><TransactionDialog open={open} onOpenChange={setOpen} onSubmit={submit} /></>;
 }
 
@@ -69,7 +69,7 @@ function AppContent() {
   const [open, setOpen] = useState(false);
   const { createTransaction } = useFinance();
   const { toast } = useToast();
-  const submit = (input: TransactionInput) => { createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu saldo foi atualizado.' }); };
+  const submit = async (input: TransactionInput) => { await createTransaction(input); setOpen(false); toast({ title: 'Lançamento adicionado', description: 'Seu saldo foi atualizado.' }); };
   return <FinproShell onAdd={() => setOpen(true)}><Router /><TransactionDialog open={open} onOpenChange={setOpen} onSubmit={submit} /></FinproShell>;
 }
 
