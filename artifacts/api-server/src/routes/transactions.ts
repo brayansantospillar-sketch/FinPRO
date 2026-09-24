@@ -39,13 +39,13 @@ router.post("/transactions", async (req: Request, res: Response) => {
 router.put("/transactions/:id", async (req: Request, res: Response) => {
   const input = parseInput(req.body);
   if (!input) return void res.status(400).json({ message: "Dados do lançamento inválidos." });
-  const [updated] = await db.update(transactionsTable).set(input).where(eq(transactionsTable.id, req.params.id)).returning();
+  const [updated] = await db.update(transactionsTable).set(input).where(eq(transactionsTable.id, String(req.params.id))).returning();
   if (!updated) return void res.status(404).json({ message: "Lançamento não encontrado." });
   res.json(updated);
 });
 
 router.delete("/transactions/:id", async (req: Request, res: Response) => {
-  const [deleted] = await db.delete(transactionsTable).where(eq(transactionsTable.id, req.params.id)).returning({ id: transactionsTable.id });
+  const [deleted] = await db.delete(transactionsTable).where(eq(transactionsTable.id, String(req.params.id))).returning({ id: transactionsTable.id });
   if (!deleted) return void res.status(404).json({ message: "Lançamento não encontrado." });
   res.status(204).send();
 });
