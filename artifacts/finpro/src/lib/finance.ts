@@ -3,7 +3,7 @@ export type Category = typeof CATEGORIES[number];
 export type TransactionType = 'receita' | 'despesa';
 export type AuthUser = { id: string; email: string; householdId: string };\nexport type Profile = { id: string; name: string; role: string; isDefault: boolean; createdAt: string; updatedAt: string };
 export type Transaction = { id: string; profileId?: string | null; type: TransactionType; description: string; amountCents: number; category: Category; date: string; notes?: string | null; createdAt: string; updatedAt?: string };
-export type RecurringEntry = { id: string; profileId: string; type: TransactionType; description: string; amountCents: number; category: Category; dayOfMonth: number; startsOn: string; endsOn?: string | null; active: boolean; notes?: string | null; createdAt: string; updatedAt: string };
+export type RecurringEntry = { id: string; profileId: string; type: TransactionType; description: string; amountCents: number; category: Category; scheduleType: 'fixed_day'|'business_day'; dayOfMonth?: number | null; businessDayOrdinal?: number | null; saturdayPolicy: 'previous_business_day'|'next_business_day'; sundayPolicy: 'previous_business_day'|'next_business_day'; holidayPolicy: 'previous_business_day'|'next_business_day'; calendarCode: string; startsOn: string; endsOn?: string | null; active: boolean; notes?: string | null; createdAt: string; updatedAt: string };
 export type RecurringEntryInput = Omit<RecurringEntry, 'id' | 'createdAt' | 'updatedAt'>;
 export type TransactionInput = Pick<Transaction, 'type' | 'description' | 'amountCents' | 'category' | 'date'> & { profileId?: string | null; notes?: string };
 
