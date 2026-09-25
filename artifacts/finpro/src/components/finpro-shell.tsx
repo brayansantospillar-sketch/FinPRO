@@ -1,4 +1,4 @@
-import { BarChart3, ChevronDown, LayoutDashboard, ListFilter, LogOut, Plus, WalletCards } from 'lucide-react';
+import { BarChart3, CalendarRange, ChevronDown, LayoutDashboard, ListFilter, LogOut, Plus, TrendingUp, WalletCards } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
@@ -7,7 +7,7 @@ import { useProfile } from '@/hooks/use-profile';
 export function FinproShell({ children, onAdd }: { children: ReactNode; onAdd: () => void }) {
   const [location] = useLocation();
   const { activeProfile, clearProfile } = useProfile();
-  const active = location === '/transacoes' ? 'transacoes' : 'dashboard';
+  const active = location === '/transacoes' ? 'transacoes' : location === '/historico' ? 'historico' : location === '/previsao' ? 'previsao' : 'dashboard';
   const initials = activeProfile?.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase() ?? '?';
   return <div className="app-shell">
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[250px] flex-col border-r border-sidebar-border bg-sidebar px-5 py-6 md:flex">
@@ -16,6 +16,8 @@ export function FinproShell({ children, onAdd }: { children: ReactNode; onAdd: (
       <nav className="space-y-1">
         <Link href="/" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'dashboard' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><LayoutDashboard className="h-[18px] w-[18px]" /> Visão geral</Link>
         <Link href="/transacoes" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'transacoes' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><ListFilter className="h-[18px] w-[18px]" /> Transações</Link>
+        <Link href="/historico" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'historico' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><CalendarRange className="h-[18px] w-[18px]" /> Histórico</Link>
+        <Link href="/previsao" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'previsao' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><TrendingUp className="h-[18px] w-[18px]" /> Previsão</Link>
       </nav>
       <button onClick={clearProfile} className="mt-auto rounded-2xl border border-sidebar-border bg-sidebar-accent/50 p-4 text-left transition hover:border-primary/40">
         <div className="mb-4 flex items-center justify-between"><span className="text-xs text-muted-foreground">Perfil ativo</span><ChevronDown className="h-4 w-4 text-muted-foreground" /></div>

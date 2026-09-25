@@ -10,6 +10,8 @@ import { ProfileProvider, useProfile } from '@/hooks/use-profile';
 import { ProfileGate } from '@/pages/profile-gate';
 import { Dashboard } from '@/pages/dashboard';
 import { TransactionsPage } from '@/pages/transactions';
+import { HistoryPage } from '@/pages/history';
+import { PlanningPage } from '@/pages/planning';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
@@ -25,6 +27,8 @@ function Router() {
       <Switch>
         <Route path="/" component={DashboardRoute} />
         <Route path="/transacoes" component={TransactionsRoute} />
+        <Route path="/historico" component={HistoryPage} />
+        <Route path="/previsao" component={PlanningPage} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
