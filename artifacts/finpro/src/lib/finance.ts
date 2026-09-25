@@ -1,13 +1,20 @@
 export const CATEGORIES = ['Alimentação', 'Mercado', 'Moradia', 'Transporte', 'Saúde', 'Educação', 'Compras', 'Lazer', 'Assinaturas', 'Contas', 'Investimentos', 'Salário', 'Outros'] as const;
 export type Category = typeof CATEGORIES[number];
 export type TransactionType = 'receita' | 'despesa';
-export type Profile = { id: string; name: string; role: string; isDefault: boolean; createdAt: string; updatedAt: string };
+export type AuthUser = { id: string; email: string; householdId: string };\nexport type Profile = { id: string; name: string; role: string; isDefault: boolean; createdAt: string; updatedAt: string };
 export type Transaction = { id: string; profileId?: string | null; type: TransactionType; description: string; amountCents: number; category: Category; date: string; notes?: string | null; createdAt: string; updatedAt?: string };
 export type RecurringEntry = { id: string; profileId: string; type: TransactionType; description: string; amountCents: number; category: Category; dayOfMonth: number; startsOn: string; endsOn?: string | null; active: boolean; notes?: string | null; createdAt: string; updatedAt: string };
 export type RecurringEntryInput = Omit<RecurringEntry, 'id' | 'createdAt' | 'updatedAt'>;
 export type TransactionInput = Pick<Transaction, 'type' | 'description' | 'amountCents' | 'category' | 'date'> & { profileId?: string | null; notes?: string };
 
 const API_BASE_URL = '/api';
+
+export const authService = {
+  me: () => request<AuthUser>('/auth/me'),
+  register: (input: { email: string; password: string; householdName?: string }) => request<AuthUser>('/auth/register', { method: 'POST', body: JSON.stringify(input) }),
+  login: (input: { email: string; password: string }) => request<AuthUser>('/auth/login', { method: 'POST', body: JSON.stringify(input) }),
+  logout: () => request<void>('/auth/logout', { method: 'POST' }),
+};
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${url}`, { ...init, headers: { 'Content-Type': 'application/json', ...(init?.headers ?? {}) } });
