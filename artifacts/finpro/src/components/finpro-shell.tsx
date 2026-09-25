@@ -3,10 +3,12 @@ import type { ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useProfile } from '@/hooks/use-profile';
+import { useAuth } from '@/hooks/use-auth';
 
 export function FinproShell({ children, onAdd }: { children: ReactNode; onAdd: () => void }) {
   const [location] = useLocation();
   const { activeProfile, clearProfile } = useProfile();
+  const { logout } = useAuth();
   const active = location === '/transacoes' ? 'transacoes' : location === '/historico' ? 'historico' : location === '/previsao' ? 'previsao' : 'dashboard';
   const initials = activeProfile?.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase() ?? '?';
   return <div className="app-shell">
@@ -28,7 +30,7 @@ export function FinproShell({ children, onAdd }: { children: ReactNode; onAdd: (
       <header className="sticky top-0 z-20 flex h-[72px] items-center justify-between border-b border-border/80 bg-background/90 px-5 backdrop-blur-md md:px-9">
         <div className="md:hidden"><Link href="/" className="flex items-center gap-2"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground"><WalletCards className="h-4 w-4" /></span><span className="font-display text-lg font-bold">Fin<span className="text-primary">Pro</span></span></Link></div>
         <div className="hidden md:block"><span className="text-sm text-muted-foreground">Hoje, </span><span className="text-sm font-semibold">{new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long' }).format(new Date())}</span></div>
-        <div className="flex items-center gap-3 md:ml-auto"><button onClick={clearProfile} className="hidden text-xs text-muted-foreground hover:text-primary sm:block">{activeProfile?.name}</button><div className="hidden items-center gap-2 text-xs text-muted-foreground lg:flex"><span className="h-2 w-2 rounded-full bg-emerald-400" /> Dados sincronizados</div><Button onClick={onAdd} className="h-9 rounded-lg bg-primary px-3 text-xs font-bold uppercase tracking-[.08em] text-primary-foreground"><Plus className="h-4 w-4" /> Lançar</Button></div>
+        <div className="flex items-center gap-3 md:ml-auto"><button onClick={()=>void logout()} className="hidden text-xs text-muted-foreground hover:text-rose-300 sm:block">Sair da conta</button><button onClick={clearProfile} className="hidden text-xs text-muted-foreground hover:text-primary sm:block">{activeProfile?.name}</button><div className="hidden items-center gap-2 text-xs text-muted-foreground lg:flex"><span className="h-2 w-2 rounded-full bg-emerald-400" /> Dados sincronizados</div><Button onClick={onAdd} className="h-9 rounded-lg bg-primary px-3 text-xs font-bold uppercase tracking-[.08em] text-primary-foreground"><Plus className="h-4 w-4" /> Lançar</Button></div>
       </header>
       <main className="mobile-pad mx-auto max-w-[1440px] p-5 md:p-9">{children}</main>
     </div>
