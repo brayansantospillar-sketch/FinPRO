@@ -6,7 +6,7 @@ import { TransactionDialog } from '@/components/transaction-dialog';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FinanceProvider, useFinance } from '@/hooks/use-finance';
-import { ProfileProvider, useProfile } from '@/hooks/use-profile';
+import { ProfileProvider, useProfile } from '@/hooks/use-profile';\nimport { AuthProvider, useAuth } from '@/hooks/use-auth';\nimport { AuthGate } from '@/pages/auth-gate';
 import { ProfileGate } from '@/pages/profile-gate';
 import { Dashboard } from '@/pages/dashboard';
 import { TransactionsPage } from '@/pages/transactions';
@@ -61,6 +61,13 @@ function ProfiledApp() {
   if (loading) return <ProfileGate />;
   if (!activeProfile) return <ProfileGate />;
   return <FinanceProvider><AppContent /></FinanceProvider>;
+}
+
+function AuthenticatedApp() {
+  const { user, loading } = useAuth();
+  if (loading) return <AuthGate />;
+  if (!user) return <AuthGate />;
+  return <ProfileProvider><ProfiledApp /></ProfileProvider>;
 }
 
 function App() {
