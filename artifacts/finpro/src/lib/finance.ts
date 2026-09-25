@@ -3,6 +3,8 @@ export type Category = typeof CATEGORIES[number];
 export type TransactionType = 'receita' | 'despesa';
 export type Profile = { id: string; name: string; role: string; isDefault: boolean; createdAt: string; updatedAt: string };
 export type Transaction = { id: string; profileId?: string | null; type: TransactionType; description: string; amountCents: number; category: Category; date: string; notes?: string | null; createdAt: string; updatedAt?: string };
+export type RecurringEntry = { id: string; profileId: string; type: TransactionType; description: string; amountCents: number; category: Category; dayOfMonth: number; startsOn: string; endsOn?: string | null; active: boolean; notes?: string | null; createdAt: string; updatedAt: string };
+export type RecurringEntryInput = Omit<RecurringEntry, 'id' | 'createdAt' | 'updatedAt'>;
 export type TransactionInput = Pick<Transaction, 'type' | 'description' | 'amountCents' | 'category' | 'date'> & { profileId?: string | null; notes?: string };
 
 const API_BASE_URL = '/api';
@@ -28,4 +30,12 @@ export const profileService = {
   list: () => request<Profile[]>('/profiles'),
   create: (input: { name: string; role: string }) => request<Profile>('/profiles', { method: 'POST', body: JSON.stringify(input) }),
   update: (id: string, input: { name: string; role: string }) => request<Profile>(`/profiles/${id}`, { method: 'PUT', body: JSON.stringify(input) }),
+};
+
+
+export const recurringService = {
+  list: () => request<RecurringEntry[]>('/recurring-entries'),
+  create: (input: RecurringEntryInput) => request<RecurringEntry>('/recurring-entries', { method: 'POST', body: JSON.stringify(input) }),
+  update: (id: string, input: RecurringEntryInput) => request<RecurringEntry>(`/recurring-entries/${id}`, { method: 'PUT', body: JSON.stringify(input) }),
+  remove: (id: string) => request<void>(`/recurring-entries/${id}`, { method: 'DELETE' }),
 };
