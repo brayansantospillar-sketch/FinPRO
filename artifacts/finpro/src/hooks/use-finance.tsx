@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { financeService, type Transaction, type TransactionInput } from '@/lib/finance';
+import { useProfile } from '@/hooks/use-profile';
 
 type FinanceContextValue = {
   transactions: Transaction[];
@@ -13,6 +14,7 @@ type FinanceContextValue = {
 const FinanceContext = createContext<FinanceContextValue | null>(null);
 
 export function FinanceProvider({ children }: { children: ReactNode }) {
+  const { activeProfile } = useProfile();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,14 +22,15 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
   const reload = useCallback(async () => {
     setLoading(true);
     try {
-      setTransactions(await financeService.list());
+      const items = await financeService.list();
+      setTransactions(activeProfile ? items.filter((item) => item.profileId === activeProfile.id) : items);
       setError(null);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Não foi possível carregar seus lançamentos.');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [activeProfile]);
 
   useEffect(() => { void reload(); }, [reload]);
 
@@ -36,12 +39,12 @@ export function FinanceProvider({ children }: { children: ReactNode }) {
     loading,
     error,
     createTransaction: async (input) => {
-      const item = await financeService.create(input);
+      const item = await financeService.create({ ...input, profileId: activeProfile?.id ?? null });
       await reload();
       return item;
     },
     updateTransaction: async (id, input) => {
-      const item = await financeService.update(id, input);
+      const item = await financeService.update(id, { ...input, profileId: activeProfile?.id ?? null });
       await reload();
       return item;
     },

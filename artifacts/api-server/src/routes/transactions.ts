@@ -20,8 +20,9 @@ function parseInput(body: unknown) {
   const category = typeof value.category === "string" ? value.category : "";
   const date = typeof value.date === "string" ? value.date : "";
   const notes = typeof value.notes === "string" ? value.notes.trim() : "";
+  const profileId = typeof value.profileId === "string" && value.profileId ? value.profileId : null;
   if (!TYPES.has(type) || !description || !Number.isSafeInteger(amountCents) || amountCents <= 0 || !CATEGORIES.has(category) || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
-  return { type, description, amountCents, category, date, notes: notes || null, updatedAt: new Date() };
+  return { profileId, type, description, amountCents, category, date, notes: notes || null, updatedAt: new Date() };
 }
 
 router.get("/transactions", async (_req: Request, res: Response) => {

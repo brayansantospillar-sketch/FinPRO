@@ -25,6 +25,7 @@ import {
 } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { useFinance } from '@/hooks/use-finance';
+import { useProfile } from '@/hooks/use-profile';
 import {
   CATEGORIES,
   type Category,
@@ -94,6 +95,7 @@ function TransactionLine({ item }: { item: Transaction }) {
 
 export function Dashboard({ onAdd }: { onAdd: () => void }) {
   const { transactions, loading } = useFinance();
+  const { activeProfile } = useProfile();
   const today = currentMonth();
   const [selectedMonth, setSelectedMonth] = useState(today.slice(5));
   const [selectedYear, setSelectedYear] = useState(today.slice(0, 4));
@@ -143,7 +145,7 @@ export function Dashboard({ onAdd }: { onAdd: () => void }) {
         <div>
           <p className="muted-label mb-2">Visão geral · {periodLabel}</p>
           <h1 className="font-display text-[29px] font-bold tracking-[-.045em] text-foreground md:text-[34px]">
-            Bom dia, Marina <span className="text-primary">.</span>
+            Bom dia, {activeProfile?.name.split(' ')[0]} <span className="text-primary">.</span>
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
             Aqui está o ritmo do seu dinheiro neste período.
