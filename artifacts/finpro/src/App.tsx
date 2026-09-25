@@ -6,7 +6,9 @@ import { TransactionDialog } from '@/components/transaction-dialog';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FinanceProvider, useFinance } from '@/hooks/use-finance';
-import { ProfileProvider, useProfile } from '@/hooks/use-profile';\nimport { AuthProvider, useAuth } from '@/hooks/use-auth';\nimport { AuthGate } from '@/pages/auth-gate';
+import { ProfileProvider, useProfile } from '@/hooks/use-profile';
+import { AuthProvider, useAuth } from '@/hooks/use-auth';
+import { AuthGate } from '@/pages/auth-gate';
 import { ProfileGate } from '@/pages/profile-gate';
 import { Dashboard } from '@/pages/dashboard';
 import { TransactionsPage } from '@/pages/transactions';
@@ -75,9 +77,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <ProfileProvider>
-            <ProfiledApp />
-          </ProfileProvider>
+          <AuthProvider>
+            <AuthenticatedApp />
+          </AuthProvider>
         </WouterRouter>
         <Toaster />
       </TooltipProvider>
