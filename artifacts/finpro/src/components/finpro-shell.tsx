@@ -9,7 +9,7 @@ export function FinproShell({ children, onAdd }: { children: ReactNode; onAdd: (
   const [location] = useLocation();
   const { activeProfile, clearProfile } = useProfile();
   const { logout } = useAuth();
-  const active = location === '/transacoes' ? 'transacoes' : location === '/historico' ? 'historico' : location === '/previsao' ? 'previsao' : 'dashboard';
+  const active = location === '/transacoes' ? 'transacoes' : location === '/historico' ? 'historico' : location === '/previsao' ? 'previsao' : location === '/contas' ? 'contas' : 'dashboard';
   const initials = activeProfile?.name.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase() ?? '?';
   return <div className="app-shell">
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[250px] flex-col border-r border-sidebar-border bg-sidebar px-5 py-6 md:flex">
@@ -20,6 +20,7 @@ export function FinproShell({ children, onAdd }: { children: ReactNode; onAdd: (
         <Link href="/transacoes" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'transacoes' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><ListFilter className="h-[18px] w-[18px]" /> Transações</Link>
         <Link href="/historico" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'historico' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><CalendarRange className="h-[18px] w-[18px]" /> Histórico</Link>
         <Link href="/previsao" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'previsao' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><TrendingUp className="h-[18px] w-[18px]" /> Previsão</Link>
+      <Link href="/contas" className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold ${active === 'contas' ? 'bg-sidebar-accent text-foreground' : 'text-muted-foreground hover:bg-sidebar-accent/60'}`}><WalletCards className="h-[18px] w-[18px]" /> Contas e cartões</Link>
       </nav>
       <button onClick={clearProfile} className="mt-auto rounded-2xl border border-sidebar-border bg-sidebar-accent/50 p-4 text-left transition hover:border-primary/40">
         <div className="mb-4 flex items-center justify-between"><span className="text-xs text-muted-foreground">Perfil ativo</span><ChevronDown className="h-4 w-4 text-muted-foreground" /></div>
