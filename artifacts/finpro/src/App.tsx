@@ -14,6 +14,7 @@ import { Dashboard } from '@/pages/dashboard';
 import { TransactionsPage } from '@/pages/transactions';
 import { HistoryPage } from '@/pages/history';
 import { PlanningPage } from '@/pages/planning';
+import { AccountsPage } from '@/pages/accounts';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/transacoes" component={TransactionsRoute} />
         <Route path="/historico" component={HistoryPage} />
         <Route path="/previsao" component={PlanningPage} />
+        <Route path="/contas" component={AccountsPage} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
