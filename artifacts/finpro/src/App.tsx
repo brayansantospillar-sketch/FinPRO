@@ -7,11 +7,14 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { FinanceProvider, useFinance } from '@/hooks/use-finance';
 import { ProfileProvider, useProfile } from '@/hooks/use-profile';
+import { AuthProvider, useAuth } from '@/hooks/use-auth';
+import { AuthGate } from '@/pages/auth-gate';
 import { ProfileGate } from '@/pages/profile-gate';
 import { Dashboard } from '@/pages/dashboard';
 import { TransactionsPage } from '@/pages/transactions';
 import { HistoryPage } from '@/pages/history';
 import { PlanningPage } from '@/pages/planning';
+import { AccountsPage } from '@/pages/accounts';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
@@ -29,6 +32,7 @@ function Router() {
         <Route path="/transacoes" component={TransactionsRoute} />
         <Route path="/historico" component={HistoryPage} />
         <Route path="/previsao" component={PlanningPage} />
+        <Route path="/contas" component={AccountsPage} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
@@ -63,14 +67,21 @@ function ProfiledApp() {
   return <FinanceProvider><AppContent /></FinanceProvider>;
 }
 
+function AuthenticatedApp() {
+  const { user, loading } = useAuth();
+  if (loading) return <AuthGate />;
+  if (!user) return <AuthGate />;
+  return <ProfileProvider><ProfiledApp /></ProfileProvider>;
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <ProfileProvider>
-            <ProfiledApp />
-          </ProfileProvider>
+          <AuthProvider>
+            <AuthenticatedApp />
+          </AuthProvider>
         </WouterRouter>
         <Toaster />
       </TooltipProvider>
