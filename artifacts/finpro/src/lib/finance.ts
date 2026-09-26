@@ -1,6 +1,8 @@
 export const CATEGORIES = ['Alimentação', 'Mercado', 'Moradia', 'Transporte', 'Saúde', 'Educação', 'Compras', 'Lazer', 'Assinaturas', 'Contas', 'Investimentos', 'Salário', 'Outros'] as const;
 export type Category = typeof CATEGORIES[number];
 export type TransactionType = 'receita' | 'despesa';
+export type FinancialAccountKind = 'checking' | 'savings' | 'credit_card' | 'cash';
+export type FinancialAccount = { id: string; householdId: string; profileId?: string | null; name: string; institutionName?: string | null; kind: FinancialAccountKind; lastFour?: string | null; currency: string; source: 'manual' | 'open_finance'; provider?: string | null; externalAccountId?: string | null; connectionId?: string | null; balanceCents?: number | null; creditLimitCents?: number | null; closingDay?: number | null; dueDay?: number | null; syncStatus: string; lastSyncedAt?: string | null; createdAt: string; updatedAt: string };
 export type AuthUser = { id: string; email: string; householdId: string };
 export type Profile = { id: string; name: string; role: string; isDefault: boolean; createdAt: string; updatedAt: string };
 export type Transaction = { id: string; profileId?: string | null; type: TransactionType; description: string; amountCents: number; category: Category; date: string; notes?: string | null; createdAt: string; updatedAt?: string };
@@ -26,6 +28,12 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
 }
+
+export const financialAccountService = {
+  list: () => request<FinancialAccount[]>('/financial-accounts'),
+  create: (input: { profileId?: string | null; name: string; institutionName?: string | null; kind: FinancialAccountKind; lastFour?: string | null }) => request<FinancialAccount>('/financial-accounts', { method: 'POST', body: JSON.stringify(input) }),
+  remove: (id: string) => request<void>(`/financial-accounts/${id}`, { method: 'DELETE' }),
+};
 
 export const financeService = {
   list: () => request<Transaction[]>('/transactions'),
